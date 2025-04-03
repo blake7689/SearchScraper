@@ -2,7 +2,7 @@
 
 
 Prerequisites
-- Create 'SearchScraperDB' in SQLEXPRESS server.  <br />
+- Create 'SearchScraperDB' in SQLEXPRESS server using SSMS.  <br />
   Connection string :
 ```
 "ConnectionStrings": {
