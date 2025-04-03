@@ -39,3 +39,8 @@ Or run the following commnd in Package Manager Console :
 ```
 update-database
 ```
+
+
+
+Search Scrape Explination
+- When scraping, a captcha will appear. Solve the captcha. The scraper will check every 5 seconds for captcha completion.
