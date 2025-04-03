@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Search Engine Scraper";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/styles.css" />
+</head>
+
+<h2>Search Engine Scraper</h2>
+
+<input type="text" id="searchPhrase" placeholder="Enter search phrase" />
+<input type="text" id="searchUrl" placeholder="Enter URL to check" />
+<button onclick="fetchResults()">Search</button>
+<hr style="border: 1px solid #ccc; margin-top: 20px; margin-bottom: 20px;" />
+
+<div id="resultsContainer">
+    <h6>Results will appear here...</h6>
+</div>
+
+<script>
+    function fetchResults() {
+        console.log("In fetch results");
+        debugger;
+        let searchPhrase = document.getElementById("searchPhrase").value;
+        let searchUrl = document.getElementById("searchUrl").value;
+
+        //error handling
+        if (!searchPhrase || !searchUrl) {
+            alert("Please enter both search phrase and URL.");
+            return;
+        }
+
+        //get results
+        fetch(`/api/search?searchPhrase=${encodeURIComponent(searchPhrase)}&searchUrl=${encodeURIComponent(searchUrl)}`)
+            .then(response => response.json())
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => console.error("Error fetching results:", error));
+    }
+
+    function displayResults(results) {
+        let resultsContainer = document.getElementById("resultsContainer");
+        resultsContainer.innerHTML = ""; // Clear previous results
+
+        if (results.length === 0) {
+            resultsContainer.innerHTML = "<h3>No results found.</h3>";
+            return;
+        }
+
+        let grid = document.createElement("div");
+        grid.classList.add("results-grid");
+
+        results.forEach(result => {
+            let card = document.createElement("div");
+            card.classList.add("result-card");
+
+            card.innerHTML = `
+                <p class="position">Position: ${result.position}</p>
+                <a href="${result.searchUrl}" target="_blank">${result.searchUrl}</a>
+            `;
+            grid.appendChild(card);
+        });
+
+        resultsContainer.appendChild(grid);
+    }
+</script>

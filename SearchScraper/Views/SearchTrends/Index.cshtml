@@ -1,0 +1,130 @@
+﻿@using Newtonsoft.Json
+
+@{
+    ViewData["Title"] = "Search Trends";
+    var trendDataJson = JsonConvert.SerializeObject(Model);
+}
+
+<h2>Search Trends</h2>
+
+<h4 style="text-align:center">Last 7 Days</h4>
+<canvas id="trendChart7Days" width="400" height="200"></canvas>
+
+<h4 style ="text-align:center">Last 30 Days (Weekly)</h4>
+<canvas id="trendChart30Days" width="400" height="200"></canvas>
+
+<h4 style="text-align:center">Last Year (Monthly)</h4>
+<canvas id="trendChartYear" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var positionDataJson = @Html.Raw(ViewData["PositionData"].ToString());
+
+    function generateLabels(timeFrame) {
+        const now = new Date();
+        let labels = [];
+
+        if (timeFrame === '7days') {
+            for (let i = 6; i >= 0; i--) {
+                let d = new Date();
+                d.setDate(now.getDate() - i);
+                labels.push(d.toISOString().split('T')[0]);
+            }
+        } else if (timeFrame === '30days') {
+            let start = new Date();
+            start.setDate(now.getDate() - 30);
+            while (start <= now) {
+                let yearWeek = getYearWeek(start);
+                if (!labels.includes(yearWeek)) labels.push(yearWeek);
+                start.setDate(start.getDate() + 7);
+            }
+        } else if (timeFrame === 'year') {
+            for (let i = 11; i >= 0; i--) {
+                let d = new Date();
+                d.setMonth(now.getMonth() - i);
+                labels.push(`${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`);
+            }
+        }
+
+        return labels;
+    }
+
+        function filterAndAggregateData(results) {
+        let last7Days = {}, last30Days = {}, lastYear = {};
+
+        results.forEach(item => {
+            let date = new Date(item.Date);
+            let position = item.Positions.length > 0 ? Math.min(...item.Positions) : null;
+            let url = item.SearchUrl;
+
+            if (!last7Days[url]) last7Days[url] = {};
+            if (!last30Days[url]) last30Days[url] = {};
+            if (!lastYear[url]) lastYear[url] = {};
+
+            let dayKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+
+            if ((new Date() - date) / (1000 * 60 * 60 * 24) <= 7) {
+                last7Days[url][dayKey] = position;
+            }
+
+            let weekKey = getYearWeek(date);
+            last30Days[url][weekKey] = position;
+
+            let monthKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+            lastYear[url][monthKey] = position;
+        });
+
+        return {
+            last7Days: formatForChart(last7Days, generateLabels('7days')),
+            last30Days: formatForChart(last30Days, generateLabels('30days')),
+            lastYear: formatForChart(lastYear, generateLabels('year'))
+        };
+    }
+
+    function formatForChart(groupedData, labels) {
+        let datasets = Object.keys(groupedData).map(url => {
+            return {
+                label: url,
+                data: labels.map(label => groupedData[url][label] ?? null),
+                borderColor: getRandomColor(),
+                borderWidth: 1,
+                fill: false
+            };
+        });
+
+        return { labels, datasets };
+    }
+
+    function getYearWeek(date) {
+        let firstJan = new Date(date.getFullYear(), 0, 1);
+        return date.getFullYear() + "-W" + Math.ceil((((date - firstJan) / (1000 * 60 * 60 * 24)) + firstJan.getDay() + 1) / 7);
+    }
+
+    function drawChart(chartId, chartData, title) {
+        var ctx = document.getElementById(chartId).getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: chartData.datasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Date Recorded' } },
+                    y: { title: { display: true, text: 'Lowest Position (Rank)' }, suggestedMin: 1, suggestedMax: 100 }
+                }
+            }
+        });
+    }
+
+    function getRandomColor() {
+        return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    }
+
+    let aggregatedData = filterAndAggregateData(positionDataJson);
+    drawChart("trendChart7Days", aggregatedData.last7Days, "Last 7 Days");
+    drawChart("trendChart30Days", aggregatedData.last30Days, "Last 30 Days (Weekly)");
+    drawChart("trendChartYear", aggregatedData.lastYear, "Last Year (Monthly)");
+</script>

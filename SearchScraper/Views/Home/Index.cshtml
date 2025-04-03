@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container mt-5">
+    <header class="text-center mb-5">
+        <h1 class="display-3 font-weight-bold">Welcome to Search Scraper</h1>
+        <p class="lead text-muted">
+        Easily extract Google search results for any URL using your desired search query.
+        </p>
+        <p class="lead text-muted">
+            Gain insights into search rankings and keyword trends with our real-time analytics.
+        </p>
+        <a href="@Url.Action("Search", "Home")" class="btn btn-primary btn-lg mt-3">
+            Start Searching Now
+        </a>
+        <a href="@Url.Action("Index", "SearchTrends")" class="btn btn-primary btn-lg mt-3">
+            View Search Trends
+        </a>
+    </header>
+    <section class="row text-center">
+        <div class="col-md-4">
+            <h3>Track Rankings</h3>
+            <p>Monitor your search positions across different timeframes.</p>
+        </div>
+        <div class="col-md-4">
+            <h3>Historical Data</h3>
+            <p>Analyze historical trends to optimize your SEO strategy.</p>
+        </div>
+        <div class="col-md-4">
+            <h3>Insights</h3>
+            <p>Stay informed on significant ranking changes.</p>
+        </div>
+    </section>
+    <section class="mt-5">
+        <h2 class="text-center">Why Choose Us?</h2>
+        <p class="text-center text-muted">
+            
+            Our powerful analytics platform provides real-time and historical search trends to help you stay ahead of the competition.
+        </p>
+    </section>
+</div>
+
