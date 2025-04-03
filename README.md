@@ -43,4 +43,4 @@ update-database
 
 
 Search Scrape Explanation
-- When scraping, a captcha will appear. Solve the captcha. The scraper will check every 5 seconds for captcha completion.
+- When scraping, a captcha will appear. Solve the captcha. The scraper will check every 5 seconds for captcha completion. Window will automatically close when data has been collected.
