@@ -1,13 +1,15 @@
 # SearchScraper
 
-- Create 'SearchScraperDb' in SQLEXPRESS server.  <br />
-  Connection string :
+
+Prerequisites
+- Create 'SearchScraperDB' in SQLEXPRESS server using SSMS.  <br />
+  Connection string (appsettings.json) :
 ```
 "ConnectionStrings": {
   "SearchScraperDbContextConnection": "Server=.\\SQLEXPRESS;Database=SearchScraperDB;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True"
 }
 ```
-- Create dbo.SearchResults :
+- Create dbo.SearchResults in SSMS:
 ```
 USE [SearchScraperDB]
 GO
@@ -33,3 +35,12 @@ CREATE TABLE [dbo].[SearchResults](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 ```
+Or run the following commnd in Package Manager Console :
+```
+update-database
+```
+
+
+
+Search Scrape Explanation
+- When scraping, a captcha will appear. Solve the captcha. The scraper will check every 5 seconds for captcha completion. Window will automatically close when data has been collected.
