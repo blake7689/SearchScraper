@@ -1,5 +1,7 @@
 # SearchScraper
 
+
+Prerequisites
 - Create 'SearchScraperDB' in SQLEXPRESS server.  <br />
   Connection string :
 ```
