@@ -42,5 +42,5 @@ update-database
 
 
 
-Search Scrape Explination
+Search Scrape Explanation
 - When scraping, a captcha will appear. Solve the captcha. The scraper will check every 5 seconds for captcha completion.
