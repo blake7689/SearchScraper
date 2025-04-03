@@ -3,7 +3,7 @@
 
 Prerequisites
 - Create 'SearchScraperDB' in SQLEXPRESS server using SSMS.  <br />
-  Connection string :
+  Connection string (appsetting.json) :
 ```
 "ConnectionStrings": {
   "SearchScraperDbContextConnection": "Server=.\\SQLEXPRESS;Database=SearchScraperDB;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True"
