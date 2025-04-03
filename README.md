@@ -1,6 +1,6 @@
 # SearchScraper
 
-- Create 'SearchScraperDb' in SQLEXPRESS server.  <br />
+- Create 'SearchScraperDB' in SQLEXPRESS server.  <br />
   Connection string :
 ```
 "ConnectionStrings": {
