@@ -7,7 +7,7 @@
   "SearchScraperDbContextConnection": "Server=.\\SQLEXPRESS;Database=SearchScraperDB;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True"
 }
 ```
-- Create dbo.SearchResults :
+- Create dbo.SearchResults in SSMS:
 ```
 USE [SearchScraperDB]
 GO
@@ -32,4 +32,8 @@ CREATE TABLE [dbo].[SearchResults](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+```
+Or run the following commnd in Package Manager Console :
+```
+update-database
 ```
